@@ -1,27 +1,25 @@
-// import express from 'express';
-// import routeConfig from './api/routes.js';
+
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const routeConfig = require('./api/routes');
+const expressConfig = require('./config/express');
+const config = require('./config/envairoment');
 
 const app = express();
-const port = 3000;
+
 
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/shopping-js');
+  await mongoose.connect(config.mongo.uri );
 }
 
 main()
   .then(() => console.log('conectado a la DB'))
   .catch((error) => console.log('error conectando a la DB:', error));
 
-app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }));
-app.use(bodyParser.json({ limit: '50mb' }));
-
+expressConfig(app);
 routeConfig(app);
 
-app.listen(port, 'localhost', () => {
-  console.log(`Example app listening on port ${port}`);
+app.listen(config.port,config.ip , () => {
+  console.log(`Example app listening on port ${config.port}`);
 });

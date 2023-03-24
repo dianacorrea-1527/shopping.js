@@ -38,7 +38,10 @@ const deleteById = (req, res) =>
     .catch((error) => res.status(500).json({ error }));
 
 const updateById = (req, res) =>
-  Product.updateOne({ _id: req.params.id }, { name: req.body.name })
+  Product.updateOne(
+    { _id: req.params.id },
+     { [req.body.field]: req.body.value},
+     )
     .exec()
     .then((product) =>
       res
